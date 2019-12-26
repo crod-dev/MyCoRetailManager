@@ -1,0 +1,16 @@
+﻿<!-- 05 Removed StartUpUri since using the Bootstrapper class to specify Startup sequence; add Bo-->
+    <Application x:Class="TRMDesktopUI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TRMDesktopUI">
+    <Application.Resources>
+        <!-- 05 Specifiy new Resource Dictionary-->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <local:Bootstrapper x:Key="Bootstrapper"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
