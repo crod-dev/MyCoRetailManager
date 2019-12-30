@@ -6,7 +6,16 @@
         xmlns:local="clr-namespace:TRMDesktopUI.Views"
         mc:Ignorable="d"
         Title="ShellView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <!-- 10 Dock panel allows for docking in differen positions-->
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" FontSize="18"> <!-- menu properties do not inherit from window properties-->
+            <MenuItem Header="_File" /><!-- 10 "_" allows for alt+f hot key for access-->
+            <MenuItem Header="_Account">
+                <MenuItem x:Name="LoginScreen" Header="_Login"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <ContentControl x:Name="ActiveItem" Margin="5"/>
+        </Grid>
+    </DockPanel>
 </Window>

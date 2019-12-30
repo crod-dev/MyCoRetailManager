@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using TRMDesktopUI.Helpers;
 using TRMDesktopUI.ViewModels;
 
 namespace TRMDesktopUI
@@ -17,6 +19,12 @@ namespace TRMDesktopUI
         public Bootstrapper()
         {
             Initialize();
+            // 10 Copied from https://stackoverflow.com/questions/30631522/caliburn-micro-support-for-passwordbox
+            // 10 Password change was not updating from UI
+            ConventionManager.AddElementConvention<PasswordBox>(
+            PasswordBoxHelper.BoundPasswordProperty,
+            "Password",
+            "PasswordChanged");
         }
         // 07 Where the actual instantiation happens; tells the container what to connect to what
         protected override void Configure()
@@ -27,7 +35,9 @@ namespace TRMDesktopUI
             // and another can listen and handle it; ties interface to implementation
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>();
+                .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<IAPIHelper, APIHelper>(); // 11 Add APIHelper into the dependency injection (one instance, singleton)
+
             // 07 Use reflection to tie ViewModels to Views, this code only runs once on startup to performance impact is minimal
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)
