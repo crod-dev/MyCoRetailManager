@@ -29,6 +29,7 @@ namespace TRMDesktopUI.ViewModels
             set
             {
                 _username = value;
+                // NotifyOfPropertyChange is provided by Caliburn.Micro anounces state change
                 NotifyOfPropertyChange(() => UserName);
                 NotifyOfPropertyChange(() => CanLogIn);
             }
@@ -52,19 +53,47 @@ namespace TRMDesktopUI.ViewModels
                     login = true;
                 return login;
             }
-        } 
-        #endregion
+        }
+        // 12
+        public bool IsErrorVisible 
+        {
+            get 
+            {
+                bool output = false;
+                if (ErrorMessage?.Length > 0)
+                    output = true;
+                return output;
+                    
+            }
+        }
 
+        // 12
+        private string _errorMessage;
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set
+            {
+                _errorMessage = value; // 12 The order is important, change the value first then notify, caused bug
+                NotifyOfPropertyChange(() => IsErrorVisible);
+                NotifyOfPropertyChange(() => ErrorMessage);
+            }
+        }
+
+
+        #endregion
+        // 12 async so application doesn't lock up when calling api
         public async Task LogIn()
         {
             try
             {
+                ErrorMessage = "";
                 var result = await _apiHelper.Authenticate(UserName, Password);
             }
             catch (Exception ex)
             {
-
-                Console.WriteLine(ex.Message);
+                ErrorMessage = ex.Message;
             }
         }
     }

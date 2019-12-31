@@ -11,6 +11,7 @@
                     <local:Bootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/><!-- 12 Add for the error message visibility toggle value-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>
