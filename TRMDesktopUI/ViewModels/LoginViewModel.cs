@@ -15,16 +15,19 @@ namespace TRMDesktopUI.ViewModels
         private string _password;
         private IAPIHelper _apiHelper;
 
+        // 11 Use dependency injection to create an apiHelper(HttpClient wrapper) to call the login service
         public LoginViewModel(IAPIHelper apiHelper)
         {
             _apiHelper = apiHelper;
         }
 
+        #region properties
+
         public string UserName
         {
             get { return _username; }
-            set 
-            { 
+            set
+            {
                 _username = value;
                 NotifyOfPropertyChange(() => UserName);
                 NotifyOfPropertyChange(() => CanLogIn);
@@ -33,8 +36,8 @@ namespace TRMDesktopUI.ViewModels
         public string Password
         {
             get { return _password; }
-            set 
-            { 
+            set
+            {
                 _password = value;
                 NotifyOfPropertyChange(() => Password);
                 NotifyOfPropertyChange(() => CanLogIn);
@@ -49,7 +52,9 @@ namespace TRMDesktopUI.ViewModels
                     login = true;
                 return login;
             }
-        }
+        } 
+        #endregion
+
         public async Task LogIn()
         {
             try
