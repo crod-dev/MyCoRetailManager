@@ -15,7 +15,7 @@ namespace TRMDesktopUI.ViewModels
         private string _password;
         private IAPIHelper _apiHelper;
 
-        // 11 Use dependency injection to create an apiHelper(HttpClient wrapper) to call the login service
+        // 11 Use dependency injection to create an apiHelper (HttpClient wrapper) to call the login service
         public LoginViewModel(IAPIHelper apiHelper)
         {
             _apiHelper = apiHelper;
