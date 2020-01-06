@@ -17,13 +17,14 @@ namespace TRMDataManager.Controllers
     { 
         // 13 Use model in library instead a UI model, UI (display) models are modified to make the properties more reader friendly
         // 13 Library model 
-        public List<UserModel> GetById()
+        [HttpGet]
+        public UserModel GetById()
         {
             // 13 Gets the id of the current user logged in
             string id = RequestContext.Principal.Identity.GetUserId();
             UserData data = new UserData();
 
-            return data.GetUserById(id);
+            return data.GetUserById(id).First();
         }
     }
 }

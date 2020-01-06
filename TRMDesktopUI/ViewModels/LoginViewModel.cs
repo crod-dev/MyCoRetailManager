@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TRMDesktopUI.Helpers;
+using MRMDesktopUI.Library;
+using MRMDesktopUI.Library.Api;
 
 // 10 Handle the events of the LogInView
 namespace TRMDesktopUI.ViewModels
@@ -90,6 +92,9 @@ namespace TRMDesktopUI.ViewModels
             {
                 ErrorMessage = "";
                 var result = await _apiHelper.Authenticate(UserName, Password);
+                // 14 If authentication works, retreive information about the user via apiHelper
+                await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
+
             }
             catch (Exception ex)
             {

@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using MRMDesktopUI.Library.Api;
+using MRMDesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +38,8 @@ namespace TRMDesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
-                .Singleton<IAPIHelper, APIHelper>(); // 11 Add APIHelper into the dependency injection (one instance, singleton)
+                .Singleton<IAPIHelper, APIHelper>() // 11 Add APIHelper into the dependency injection (one instance, singleton)
+                .Singleton<ILoggedInUserModel, LoggedInUserModel>(); // 14 Add ILoggedInUserModel to dependency injection
 
             // 07 Use reflection to tie ViewModels to Views, this code only runs once on startup to performance impact is minimal
             GetType().Assembly.GetTypes()

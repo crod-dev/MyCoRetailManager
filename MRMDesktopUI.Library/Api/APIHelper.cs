@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MRMDesktopUI.Library.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -9,18 +10,21 @@ using System.Threading.Tasks;
 using TRMDesktopUI.Models;
 
 // 11 Create Class; handles all api call interactions, the views will call this calls for services needed 
-namespace TRMDesktopUI.Helpers
+namespace MRMDesktopUI.Library.Api
 {
     // 11 Extract interface to be able to use it in the dependency injection system
     public class APIHelper : IAPIHelper
     {
         private HttpClient apiClient;
+        private ILoggedInUserModel _loggedInUser; // 14 Add private property
 
         // 11 As soon as the APIHelper is called it'll initialize and perpare the
         // HttpClient property for usage with this constructor; one HttpClient for the duration of application
-        public APIHelper()
+        // 14 add IllogedInuserModel parameter
+        public APIHelper(ILoggedInUserModel loggedInUser)
         {
             InitializeClient();
+            _loggedInUser = loggedInUser;
         }
         private void InitializeClient()
         {
@@ -54,6 +58,35 @@ namespace TRMDesktopUI.Helpers
                 {
                     throw new Exception(response.ReasonPhrase);
                 }
+            }
+        }
+        // 14 Retreive the authenitcated user information
+        // 14 Create MRMDesktopUI class library to hold the models
+        // 14 Move the apiHelper and interface to new library (helpers shouldn't be in the UI)
+        public async Task GetLoggedInUserInfo(string token)
+        {
+            apiClient.DefaultRequestHeaders.Clear();
+            apiClient.DefaultRequestHeaders.Accept.Clear();
+            apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer { token }");
+
+            using (HttpResponseMessage response = await apiClient.GetAsync("/api/User"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<LoggedInUserModel>();
+                    _loggedInUser.CreatedDate = result.CreatedDate;
+                    _loggedInUser.EmailAddress = result.EmailAddress;
+                    _loggedInUser.FirstName = result.FirstName;
+                    _loggedInUser.LastName = result.LastName;
+                    _loggedInUser.Id = result.Id;
+                    _loggedInUser.Token = token;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+
             }
         }
     }
