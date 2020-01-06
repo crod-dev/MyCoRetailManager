@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TRMDesktopUI.Helpers;
 using MRMDesktopUI.Library;
 using MRMDesktopUI.Library.Api;
+using TRMDesktopUI.EventModels;
 
 // 10 Handle the events of the LogInView
 namespace TRMDesktopUI.ViewModels
@@ -16,11 +17,14 @@ namespace TRMDesktopUI.ViewModels
         private string _username;
         private string _password;
         private IAPIHelper _apiHelper;
+        private IEventAggregator _events; // 16 private field EventAggregator from Bootstrapper class
 
         // 11 Use dependency injection to create an apiHelper (HttpClient wrapper) to call the login service
-        public LoginViewModel(IAPIHelper apiHelper)
+        // 16 Pass in EventAggregator from Bootstrapper class
+        public LoginViewModel(IAPIHelper apiHelper, IEventAggregator events)
         {
             _apiHelper = apiHelper;
+            _events = events;
         }
 
         #region properties
@@ -94,6 +98,9 @@ namespace TRMDesktopUI.ViewModels
                 var result = await _apiHelper.Authenticate(UserName, Password);
                 // 14 If authentication works, retreive information about the user via apiHelper
                 await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
+                // 16 PublichOnUIThread causes the event to be heard on the UI thread in case the 
+                // processing falls on a background thread, everyone will heard the event (yes, we logged on event)
+                _events.PublishOnUIThread(new LogOnEvent());
 
             }
             catch (Exception ex)

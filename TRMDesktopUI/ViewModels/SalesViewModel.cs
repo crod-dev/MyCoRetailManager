@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 namespace TRMDesktopUI.ViewModels
 {
     // 15 Create
-    class SalesViewModel : Screen
+    public class SalesViewModel : Screen
     {
         private BindingList<string> _products;
+        private BindingList<string> _cart;
+        private int _itemQuantity;
 
         public BindingList<string> Products
         {
@@ -22,8 +24,7 @@ namespace TRMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Products);
             }
         }
-        private BindingList<string> _cart;
-
+        
         public BindingList<string> Cart
         {
             get { return _cart; }
@@ -33,10 +34,8 @@ namespace TRMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Cart);
             }
         }
-
-        private string _itemQuantity;
-
-        public string ItemQuantity
+            
+        public int ItemQuantity
         {
             get { return _itemQuantity; }
             set 
